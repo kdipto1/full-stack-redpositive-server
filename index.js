@@ -28,6 +28,7 @@ async function run() {
       const result = await dataCollection.insertOne(newCandidate);
       res.send(result);
     });
+    //api for getting all candidates
     app.get("/candidates", async (req, res) => {
       const query = {};
       const candidates = await dataCollection.find(query).toArray();
@@ -41,6 +42,13 @@ async function run() {
       const updateDoc = { $set: data };
       const option = { upsert: true };
       const result = await dataCollection.updateOne(filter, updateDoc, option);
+      res.send(result);
+    });
+    //api for deleting candidate
+    app.delete("/deleteCandidate/:id", async (req, res) => {
+      const id = req.params;
+      const query = { _id: ObjectId(id) };
+      const result = await dataCollection.deleteOne(query);
       res.send(result);
     });
   } finally {
